@@ -15,15 +15,15 @@ class KnightsTravails {
       [2, -1],
     ];
 
-    let [x, y] = position;
-    let validPositions = [];
+    const [x, y] = position;
+    const validPositions = [];
 
     knightMoves.forEach((move) => {
-      let dx = move[0];
-      let dy = move[1];
+      const dx = move[0];
+      const dy = move[1];
 
-      let newX = x + dx;
-      let newY = y + dy;
+      const newX = x + dx;
+      const newY = y + dy;
 
       if (newX >= 0 && newX < this.board && newY >= 0 && newY < this.board) {
         validPositions.push([newX, newY]);
@@ -31,4 +31,33 @@ class KnightsTravails {
     });
     return validPositions;
   }
+
+  knightMoves(start, end) {
+    const queue = [[start]];
+    const visited = new Set();
+
+    while (queue.length > 0) {
+      const positions = queue.shift();
+      const position = positions[positions.length - 1];
+      let positionKey = position.join(",");
+
+      if (positionKey === end.join(",")) {
+        console.log(positions);
+        return positions;
+      }
+
+      const moves = this.getPossibleMoves(position);
+
+      moves.forEach((move) => {
+        if (!visited.has(move.join(","))) {
+          queue.push([...positions, move]);
+          visited.add(move.join(","));
+        }
+      });
+    }
+  }
 }
+
+const travails = new KnightsTravails();
+
+travails.knightMoves([1, 1], [6, 7]);
